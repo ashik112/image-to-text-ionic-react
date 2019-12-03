@@ -10,12 +10,12 @@ const formatNormalImage = (imageData) => {
     try {
       await Jimp.read(imageData)
         .then(image => {
-          image = image.quality(100)
-//            .resize(Jimp.AUTO, 400)
+          image.quality(100)
+            .resize(Jimp.AUTO, 400)
 //            .autocrop().scaleToFit(256, 256)
 //            .rgba(false)
             .greyscale() // set greyscale
-//            .contrast(1)
+            .contrast(1)
 //            .invert()
 //            .color([{apply: 'desaturate', params: [90]}])
             .getBase64(Jimp.MIME_PNG, async (err, src) => {
