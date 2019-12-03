@@ -23,16 +23,16 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  } from '@ionic/react';
-import { book, build, colorFill, grid, camera } from 'ionicons/icons';
+} from '@ionic/react';
+import {book, build, colorFill, grid, camera} from 'ionicons/icons';
 import React, {Component} from 'react';
-import { Plugins, CameraResultType } from '@capacitor/core'
-import { createWorker } from 'tesseract.js';
+import {Plugins, CameraResultType} from '@capacitor/core';
+import {createWorker} from 'tesseract.js';
 
 import './Home.css';
-import { doOCR } from '../services/ocr';
+import {doOCR} from '../services/ocr';
 
-const { Camera } = Plugins;
+const {Camera} = Plugins;
 
 class HomePage extends Component {
   constructor(props) {
@@ -42,23 +42,23 @@ class HomePage extends Component {
       showLoading: false,
       showModal: false,
       result: {},
-    }
+    };
   }
 
   //const worker = createWorker({
   //  logger: m => console.log(m),
   //});
 
-/*  doOCR = async (img) => {
-    const worker = createWorker({
-      logger: m => console.log(m),
-    });
-    await worker.load();
-    await worker.loadLanguage('eng');
-    await worker.initialize('eng');
-    const { data: { text } } = await worker.recognize(img);
-    console.log(text);
-  };*/
+  /*  doOCR = async (img) => {
+      const worker = createWorker({
+        logger: m => console.log(m),
+      });
+      await worker.load();
+      await worker.loadLanguage('eng');
+      await worker.initialize('eng');
+      const { data: { text } } = await worker.recognize(img);
+      console.log(text);
+    };*/
 
   async takePicture() {
     const image = await Camera.getPhoto({
@@ -81,28 +81,47 @@ class HomePage extends Component {
   };
 
   render() {
-    const { showModal, result } = this.state;
+    const {result} = this.state;
     return (
       <IonPage>
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonMenuButton />
+              <IonMenuButton/>
             </IonButtons>
-            <IonTitle>Home</IonTitle>
+            <IonTitle>IMAGE TO TEXT</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent>
+          {
+            result && result.text && (
+              <IonCard>
+                <IonCardSubtitle>
+                  <IonButton
+                    color="danger"
+                    onClick={() => {
+                      this.setState({
+                        result: {},
+                      });
+                    }}
+                  >
+                    CLOSE
+                  </IonButton>
+                </IonCardSubtitle>
+                {/*<IonCardTitle>*/}
+                {/*  Accuracy: {result.details.confidence}*/}
+                {/*</IonCardTitle>*/}
+                <IonCardContent>
+                  {result.text}
+                </IonCardContent>
+              </IonCard>
+            )
+          }
           <IonCard className="welcome-card">
-            {/*<img src="/assets/shapes.svg" alt=""/>*/}
-            <IonCardHeader>
-              <IonCardSubtitle>OCR TEST!</IonCardSubtitle>
-              <IonCardTitle>DEMO</IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
+            <IonCardSubtitle>
               <IonButton
                 type="primary"
-                onClick={async () =>{
+                onClick={async () => {
                   try {
                     await this.takePicture();
                   } catch (e) {
@@ -110,30 +129,29 @@ class HomePage extends Component {
                   }
                 }}
               >
-                <IonIcon slot="start" color="medium" icon={camera}/>
+                <IonIcon slot="start" icon={camera}/>
                 TAKE PHOTO
               </IonButton>
-            </IonCardContent>
+            </IonCardSubtitle>
           </IonCard>
           {
             this.state.image && (
               <IonCard>
-                <IonCardContent>
-                  <IonImg src={this.state.image} alt="N/A" />
+                <IonCardSubtitle>
                   <IonButton
                     type="primary"
-                    onClick={async () =>{
+                    onClick={async () => {
                       await this.setState({
                         showLoading: true,
                       });
                       const res = await doOCR(this.state.image);
                       console.log(res);
-                      if(res && res.data) {
-                       await this.setState({
-                         result: res.data,
-                         showModal: true,
-                         showLoading: false,
-                       });
+                      if (res && res.data) {
+                        await this.setState({
+                          result: res.data,
+                          showModal: true,
+                          showLoading: false,
+                        });
                       } else {
                         this.setState({
                           showLoading: false,
@@ -141,36 +159,18 @@ class HomePage extends Component {
                       }
                     }}
                   >
-                    <IonIcon slot="start" color="medium" icon={camera}/>
-                    DO OCR
+                    <IonIcon slot="start" icon={grid}/>
+                    CONVERT
                   </IonButton>
+                </IonCardSubtitle>
+                <IonCardContent>
+                  <IonImg src={this.state.image} alt="N/A"/>
                 </IonCardContent>
               </IonCard>
             )
           }
-
-          {/*<IonList lines="none">*/}
-          {/*  <IonListHeader>*/}
-          {/*    <IonLabel>Resources</IonLabel>*/}
-          {/*  </IonListHeader>*/}
-          {/*  <IonItem href="https://ionicframework.com/docs/" target="_blank">*/}
-          {/*    <IonIcon slot="start" color="medium" icon={book} />*/}
-          {/*    <IonLabel>Ionic Documentation</IonLabel>*/}
-          {/*  </IonItem>*/}
-          {/*  <IonItem href="https://ionicframework.com/docs/building/scaffolding" target="_blank">*/}
-          {/*    <IonIcon slot="start" color="medium" icon={build} />*/}
-          {/*    <IonLabel>Scaffold Out Your App</IonLabel>*/}
-          {/*  </IonItem>*/}
-          {/*  <IonItem href="https://ionicframework.com/docs/layout/structure" target="_blank">*/}
-          {/*    <IonIcon slot="start" color="medium" icon={grid} />*/}
-          {/*    <IonLabel>Change Your App Layout</IonLabel>*/}
-          {/*  </IonItem>*/}
-          {/*  <IonItem href="https://ionicframework.com/docs/theming/basics" target="_blank">*/}
-          {/*    <IonIcon slot="start" color="medium" icon={colorFill} />*/}
-          {/*    <IonLabel>Theme Your App</IonLabel>*/}
-          {/*  </IonItem>*/}
-          {/*</IonList>*/}
           <IonLoading
+            duration={0}
             isOpen={this.state.showLoading}
             onDidDismiss={() => {
               this.setState({
@@ -178,55 +178,9 @@ class HomePage extends Component {
               });
             }}
             message={'Loading...'}
-            duration={5000}
             translucent
             backdropDismiss={false}
           />
-          {
-            result && result.text && (
-              <IonModal
-                isOpen={showModal}
-              >
-                <IonGrid>
-                  {/*<IonRow>*/}
-                  {/*  <IonCol>*/}
-                  {/*    <p>Converted Image</p><br/>*/}
-                  {/*    <IonImg src={result.image} alt="N/A"/>*/}
-                  {/*  </IonCol>*/}
-                  {/*</IonRow>*/}
-                  <IonRow>
-                    <IonCol>
-                        <p>
-                          Result <br/>
-                          Confidence: {result.details.confidence} <br/>
-                          {result.text}
-                        </p>
-                    </IonCol>
-                  </IonRow>
-                </IonGrid>
-                {/*<IonCard style={{height: '100%'}}>*/}
-                {/*  <IonCardHeader>*/}
-                {/*    <IonCardTitle>Converted Image</IonCardTitle>*/}
-                {/*  </IonCardHeader>*/}
-                {/*  <IonCardContent>*/}
-                {/*    <IonImg src={result.image} alt="N/A"/>*/}
-                {/*  </IonCardContent>*/}
-                {/*</IonCard>*/}
-                {/*<IonCard style={{height: '100%'}}>*/}
-                {/*  <IonCardHeader>*/}
-                {/*    <IonCardSubtitle>OCR RESULT</IonCardSubtitle>*/}
-                {/*    <IonCardTitle>Confidence: {result.details.confidence}</IonCardTitle>*/}
-                {/*  </IonCardHeader>*/}
-                {/*  <IonCardContent>*/}
-                {/*    <pre>*/}
-                {/*      {result.text}*/}
-                {/*    </pre>*/}
-                {/*  </IonCardContent>*/}
-                {/*</IonCard>*/}
-                <IonButton onClick={() => this.setState({ showModal: false })}>Close Modal</IonButton>
-              </IonModal>
-            )
-          }
         </IonContent>
       </IonPage>
     );
