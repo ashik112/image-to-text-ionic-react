@@ -11,14 +11,9 @@ import {
   IonToolbar
 } from '@ionic/react';
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { AppPage } from '../declarations';
+import { withRouter } from 'react-router-dom';
 
-interface MenuProps extends RouteComponentProps {
-  appPages: AppPage[];
-}
-
-const Menu: React.FunctionComponent<MenuProps> = ({ appPages }) => (
+const Menu = ({ appPages }) => (
   <IonMenu contentId="main" type="overlay">
     <IonHeader>
       <IonToolbar>

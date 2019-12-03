@@ -2,7 +2,6 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { AppPage } from './declarations';
 
 import Menu from './components/Menu';
 import Home from './pages/Home';
@@ -28,7 +27,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-const appPages: AppPage[] = [
+const appPages = [
   {
     title: 'Home',
     url: '/home',
@@ -41,7 +40,7 @@ const appPages: AppPage[] = [
   }
 ];
 
-const App: React.FC = () => (
+const App = () => (
   <IonApp>
     <IonReactRouter>
       <IonSplitPane contentId="main">

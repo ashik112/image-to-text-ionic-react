@@ -2,7 +2,7 @@ import { IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonList, IonMenuBu
 import { americanFootball, basketball, beer, bluetooth, boat, build, flask, football, paperPlane, wifi } from 'ionicons/icons';
 import React from 'react';
 
-const ListPage: React.FC = () => {
+const ListPage = () => {
   return (
     <IonPage>
       <IonHeader>

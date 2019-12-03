@@ -1,5 +1,7 @@
 {
   "name": "ocr-demo",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "react"
 }

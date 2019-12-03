@@ -1,0 +1,9 @@
+{
+  "appId": "com.ionic.ocr",
+  "appName": "MY OCR",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build",
+  "cordova": {},
+  "linuxAndroidStudioPath": "/media/ashik/Programs/android-studio/bin/studio.sh"
+}
